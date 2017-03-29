@@ -1,0 +1,30 @@
+Who was the first African American baseball player?,Who was the first African American baseball player?
+Moses Fleetwood Walker, Jackie Robinson, Barry Bonds, Willie Mays,,,Jennifer Anniston is currently married to Brad Pitt.,Jennifer Anniston is currently married to Brad Pitt.
+False,,,What is 2+2?,What is 2+2?
+4,,,The derivative of f(x)=ln(x) is 1/x.,The derivative of f(x)=ln(x) is 1/x.
+True,,,What is the name of the Los Angeles NFL team?,What is the name of the Los Angeles NFL team?
+Rams,,,In what year was the Declaration of Independence drafted?,In what year was the Declaration of Independence drafted?
+1776,,,Where was the Columbian World's Fair held in 1892?,Where was the Columbian World's Fair held in 1892?
+Los Angeles, Washington D.C., Chicago, New York,,,Who released the album Abbey Road?,Who released the album Abbey Road?
+The Beatles,,,Which artist won album of the year at the 2017 Grammys?,Which artist won album of the year at the 2017 Grammys?
+Beyonce, Adele, Chance the Rapper, Lukas Graham,,,create,create
+Who was the first African American baseball player?,Who was the first African American baseball player?
+Moses Fleetwood Walker, Jackie Robinson, Barry Bonds, Willie Mays,,,Jennifer Anniston is currently married to Brad Pitt.,Jennifer Anniston is currently married to Brad Pitt.
+False,,,What is 2+2?,What is 2+2?
+4,,,The derivative of f(x)=ln(x) is 1/x.,The derivative of f(x)=ln(x) is 1/x.
+True,,,What is the name of the Los Angeles NFL team?,What is the name of the Los Angeles NFL team?
+Rams,,,In what year was the Declaration of Independence drafted?,In what year was the Declaration of Independence drafted?
+1776,,,Where was the Columbian World's Fair held in 1892?,Where was the Columbian World's Fair held in 1892?
+Los Angeles, Washington D.C., Chicago, New York,,,Who released the album Abbey Road?,Who released the album Abbey Road?
+The Beatles,,,Which artist won album of the year at the 2017 Grammys?,Which artist won album of the year at the 2017 Grammys?
+Beyonce, Adele, Chance the Rapper, Lukas Graham,,,create,create
+Who was the first African American baseball player?,Who was the first African American baseball player?
+Moses Fleetwood Walker, Jackie Robinson, Barry Bonds, Willie Mays,,,Jennifer Anniston is currently married to Brad Pitt.,Jennifer Anniston is currently married to Brad Pitt.
+False,,,What is 2+2?,What is 2+2?
+4,,,The derivative of f(x)=ln(x) is 1/x.,The derivative of f(x)=ln(x) is 1/x.
+True,,,What is the name of the Los Angeles NFL team?,What is the name of the Los Angeles NFL team?
+Rams,,,In what year was the Declaration of Independence drafted?,In what year was the Declaration of Independence drafted?
+1776,,,Where was the Columbian World's Fair held in 1892?,Where was the Columbian World's Fair held in 1892?
+Los Angeles, Washington D.C., Chicago, New York,,,Who released the album Abbey Road?,Who released the album Abbey Road?
+The Beatles,,,Which artist won album of the year at the 2017 Grammys?,Which artist won album of the year at the 2017 Grammys?
+Beyonce, Adele, Chance the Rapper, Lukas Graham,,,create,create

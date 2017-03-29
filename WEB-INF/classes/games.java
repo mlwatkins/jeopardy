@@ -249,6 +249,8 @@ public class games extends HttpServlet
       out.println("  <br /><br />");
       out.println("    <center><h1> Jeopardy Games List<br /></h1></center>");
       out.println("    <center>");
+
+
       out.println("    <div class=\"container\">");
       out.println("<table class=\"table\">");
       out.println("<thead class=\"thead-inverse\">");
@@ -278,9 +280,13 @@ public class games extends HttpServlet
       out.println(" <td>" + owner + " </td> ");
       out.println("   <td>" + info + " </td> ");
       out.println("<td> ");
-      out.println("          <button type=\"submit\" style=\"text-align:center\" name=\"play\" id=\"play\">Play</button>");
-      out.println("          <button type=\"submit\" style=\"text-align:center\" name=\"update\" id=\"update\">Update</button>");
-      out.println("          <button type=\"submit\" style=\"text-align:center\" name=\"delete\" id=\"delete\">Delete</button> ");
+      out.println("      <form action=\"http://localhost:8080/jeopardy/table\" method=\"get\">");
+      out.println("          <button type=\"submit\" style=\"text-align:center\" name=\"play\" value=\"play\">Play</button>");
+      out.println("</form>");
+      out.println("      <form action=\"http://localhost:8080/jeopardy/form\" method=\"get\">");
+      out.println("          <button type=\"submit\" style=\"text-align:center\" name=\"update\" value=\"update\">Update</button>");
+      out.println("</form>");
+      out.println("          <button type=\"submit\" style=\"text-align:center\" name=\"delete\" value=\"delete\">Delete</button> ");
       out.println("      </td> ");
       out.println(" </tr> ");
       }

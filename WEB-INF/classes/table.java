@@ -1,7 +1,3 @@
-package assignment4;
-
-
-
 //Import Servlet Libraries
 import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
@@ -72,8 +68,9 @@ public class table extends HttpServlet
         out.println("#jeopardyTable tfoot td {text-align: center; background-color:#2a3698;}");
 
         out.println("</style></head>");
+        out.println("      <body><form action=\"form\" method=\"get\">");
 
-        out.println("<body><table id=\"jeopardyTable\" cellspacing=\"5\" cellpadding=\"0\">");
+        out.println("<table id=\"jeopardyTable\" cellspacing=\"5\" cellpadding=\"0\">");
         out.println("<thead>");
 
         out.println("<tr><th>Sports</th><th>Math</th><th>Celebrities</th><th>History</th><th>Music</th></tr>");
@@ -94,8 +91,8 @@ public class table extends HttpServlet
 
         out.println("</body>");
         out.println("<button style=\"text-align:center\" alight=\"right\" type=\"submit\" name=\"back\" value=\"back\"><b>Back</b></button></html>");
+        out.println("      </form>"); 
         
-       
         out.close();
 
    }
@@ -105,7 +102,8 @@ public class table extends HttpServlet
    {
    		res.setContentType ("text/html");
       	PrintWriter out = res.getWriter ();
-      	out.println(req.getParameter("back"));
+      	out.println("alsdkjfalskjdfas");
+        out.println(req.getParameter("back"));
    		if (req.getParameter("back") != null) {
         	res.sendRedirect("http://localhost:8080/jeopardy/form");
       	}

@@ -21,7 +21,7 @@ public class form extends HttpServlet
    // http://localhost:8080/cs4640/examples.simpleform
    
    // input text file (from CSLAB server)
-   private static java.lang.String question_data = "/Applications/XAMPP/htdocs/Assignment-3/questions.txt";
+   private static java.lang.String question_data = "http://plato.cs.virginia.edu/~mlw5ea/Assignment-3/actual-data.txt";
    
    
    String row = "";
@@ -140,7 +140,8 @@ public class form extends HttpServlet
       try {
           java.io.File file = new java.io.File( foldername, filename );
           java.io.FileWriter fout = new java.io.FileWriter( file , true);
-
+          //user = (String)session.getAttribute("UserID");
+          // have user enter a game name
           for (int i = 0; i < str.size(); i++) {
             fout.write( str.get(i) + "," );
             if (i % 4 == 0) {
