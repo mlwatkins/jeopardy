@@ -121,7 +121,7 @@ public class login extends HttpServlet
       out.println("      <td><input type=\"password\" name=\"pwd\" size=\"15\" maxlength=\"20\"></td>");
       out.println("    </tr>");
       out.println("    <tr>");
-      out.println("      <td colspan=\"4\" ><input type=\"submit\" value=\"Log in\" name=\"btn\"></input");
+      out.println("      <td colspan=\"4\" ><input type=\"submit\" value=\"Log in\" name=\"btn\"></input>");
       out.println("    </tr>");
       out.println("  </table>");      
       out.println("</form>");

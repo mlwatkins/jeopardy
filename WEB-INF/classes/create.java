@@ -9,8 +9,8 @@ import java.util.*;
 import java.lang.*;
 
 
-@WebServlet("/form")
-public class form extends HttpServlet
+@WebServlet("/create")
+public class create extends HttpServlet
 {
    // Location of servlet.
    static String url = "http://localhost:8080/jeopardy/form";
@@ -24,7 +24,7 @@ public class form extends HttpServlet
    private static java.lang.String question_data = "http://plato.cs.virginia.edu/~mlw5ea/Assignment-3/actual-data.txt";
    
    private static String LogoutServlet = "http://localhost:8080/jeopardy/logout";
-   private static String FormServlet = "http://localhost:8080/jeopardy/form";
+   private static String CreateServlet = "http://localhost:8080/jeopardy/create";
    
    String row = "";
    String column = "";
@@ -44,24 +44,13 @@ public class form extends HttpServlet
   {
       res.setContentType ("text/html");
       PrintWriter out = res.getWriter ();
-      if (req.getParameter("add") != null) {
-        res.sendRedirect("http://localhost/Assignment-3/assignment3.php");
-      } else if (req.getParameter("create") != null) {
-        Enumeration<String> paramNames = req.getParameterNames();
+      if (req.getParameter("create_btn") != null) {
+        gameID = req.getParameter("gameID");
+        description = req.getParameter("description");
 
-
+        writeGames("/Applications/apache-tomcat/webapps/jeopardy/WEB-INF/data/games.txt", user, gameID, description);
         
-        List<String> paramList = new ArrayList<String>();
-        List<String> jeopardyQuestions = new ArrayList<String>();
-        while (paramNames.hasMoreElements()) {
-          paramList.add(req.getParameter(paramNames.nextElement()));
-        }
-
-        int numParams = paramList.size();
-
-        writeToFile("/Applications/apache-tomcat/webapps/jeopardy/WEB-INF/data/", "jeopardy.txt", paramList, user, gameID);
-        
-        res.sendRedirect("http://localhost:8080/jeopardy/table");
+        res.sendRedirect("http://localhost:8080/jeopardy/games");
       } 
        
         out.close();
@@ -86,12 +75,9 @@ public class form extends HttpServlet
       user = (String)session.getAttribute("UserID");
 
 
-      String qaData = readFile(question_data);
-      String[] separatedQs = qaData.split("\n");
-
       out.println("<html>");
       out.println("  <head>");
-      out.println("    <title>Jeopardy Q/A Selector</title>");
+      out.println("    <title>Jeopardy</title>");
       out.println("<link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\" integrity=\"sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u\" crossorigin=\"anonymous\">");
 
       out.println("<link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css\" integrity=\"sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp\" crossorigin=\"anonymous\">");
@@ -164,23 +150,20 @@ public class form extends HttpServlet
       out.println("    </tr>");
       out.println("  </table>");
       out.println("<br></br>");
-      out.println("    <center><h1>Jeopardy<br /></h1></center>");
+      out.println("    <center><h1>Create Jeopardy Game<br /></h1></center>");
       out.println("    <center>");
       
-      out.println("<form method=\"get\"action=\"" + FormServlet + "\" id=\"form1\" name=\"form1\">");                    
+      out.println("<form method=\"post\"action=\"" + CreateServlet + "\" id=\"form1\" name=\"form1\">");                    
       out.println("  <table Cellspacing=\"0\" Cellpadding=\"3\" Border=\"0\" >");
-      out.println("    <tr><td colspan=\"4\"><b>Update Game:</b></td></tr>");
+      out.println("    <tr><td colspan=\"4\"><b>Create Game:</b></td></tr>");
       out.println("    <tr>");
-      
-      out.println("      <td>Game ID: " + req.getParameter("gameID") + "</td>");
-      out.println("      <td>Description: " + req.getParameter("description") + "</td>");
-      
+        out.println("      <td>Game ID:</td>");
+        out.println("      <td><input autofocus type=\"text\" name=\"gameID\" size=\"15\" maxLength=\"20\"><td>");
+        out.println("      <td>Description:</td>");
+        out.println("      <td><input type=\"text\" name=\"description\" size=\"15\" maxlength=\"20\"></td>");
       out.println("    </tr>");
       out.println("    <tr>");
-      out.println("      <td colspan=\"4\" ><input type=\"submit\" value=\"Create\" name=\"create_btn\"></input>");
-      out.println("    </tr>");
-      out.println("    <tr>");
-      out.println("      <td colspan=\"4\" ><input type=\"submit\" value=\"Update\" name=\"update_btn\"></input>");
+      out.println("      <td colspan=\"4\" ><button type=\"submit\" value=\"Create\" name=\"create_btn\">Create</button>");
       out.println("    </tr>");
       out.println("  </table>");      
       out.println("</form>");
@@ -188,81 +171,20 @@ public class form extends HttpServlet
       out.println("<br />");
       out.println("<hr />");
       out.println("<br />");
-
-      out.println("      <form action=\"form\" method=\"post\">");
-      for (int i = 0; i < separatedQs.length; i++) {
-        String[] data = separatedQs[i].split(",");
-        String question = data[0];
-        String answers = "";
-        for (int x = 1; x < data.length; x++) {
-          if (x == data.length - 1) answers = answers + data[x];
-          else answers = answers + data[x] + ", ";
-        }
-        out.println("         <table id=\"qaTable\" border=\"1\" align=\"center\" cellpadding=\"3\" >");
-      
-        out.println("           <tr> <td><b>Question: </b>");
-        out.println(" <textarea readonly name=\"question" + i + "\">" + question + "</textarea><br><b>Answer: </b>"); 
-        out.println(" <textarea readonly name=\"answer" + i + "\">" + answers + "</textarea></td>");
-
-        // We decided to use Categories and Scores instead of Rows and Columns
-        // Professor Upsorn said this was okay, just to let you know that this is the wasy we're doing it
-
-        out.println("        <td>Category: <input type=\"text\" name=\"category" + i + "\" </td>");
-        out.println("        <td>Score: <input type=\"text\" name=\"score" + i + "\"</td></tr>");
-      }
-      out.println("        <tr><td colspan=\"2\" align=\"center\"><button style=\"text-align:center\" type=\"submit\" name=\"create\" value=\"create\">Create Game</button></td>");
-
-       // This button links to the assignment 3 php, however our assignment 3 isn't working properly. We need to fix this for the next assignment
-      out.println("        <td colspan=\"2\" align=\"center\"><button style=\"text-align:center\" type=\"submit\" name=\"add\" value=\"add\">Add More Q/A</button></td></tr></table>");      
-      out.println("      </form>");       
-      out.println("    </center>");
-      out.println("  </body>");
-      out.println("</html>");
-
-      out.close ();  
-   }
+    }
    
-   
-   
-   private  String readFile(String data)
-   {
-      String cleared_str_data = ""; 
-      try 
-      {
-         java.net.URL url = new java.net.URL( data );
-         java.net.URLConnection urlcon = url.openConnection();
-         java.io.BufferedReader input_file = new java.io.BufferedReader( new java.io.InputStreamReader( urlcon.getInputStream() ) );
-         java.lang.String line = new java.lang.String();
-         while ((line = input_file.readLine()) != null) {            
-            if (line.length() > 0 && cleared_str_data == "") cleared_str_data = line;  
-            else cleared_str_data += "\n" + line; 
-         }
-         input_file.close();
-      } catch ( java.lang.Exception e ) {
-         System.out.println( "ERROR: Cannot read input file !!" );
-      }
-      return cleared_str_data;
-   }
-
-  private  void writeToFile( java.lang.String foldername, java.lang.String filename, List<String> str, String user, String name )
-  {
-      try {
-          java.io.File file = new java.io.File( foldername, filename );
+  private void writeGames(java.lang.String filename, String user, String name, String description) {
+    try {
+          java.io.File file = new java.io.File( filename );
           java.io.FileWriter fout = new java.io.FileWriter( file , true);
-          //user = (String)session.getAttribute("UserID");
-          // have user enter a game name
-          fout.write("User:"+user+"\n");
-          fout.write("GameID:"+name+"\n");
-          for (int i = 0; i < str.size(); i++) {
-            fout.write( str.get(i) + "," );
-          }
-          fout.write("\n");
+          fout.write(name+","+user+","+description+"\n");
           fout.flush();
           fout.close();
       } catch ( java.io.IOException e ) {
-          System.out.println( "Error: cannot write to file " + foldername + filename + " : " + e.toString() );
+          System.out.println( "Error: cannot write to file " + filename + " : " + e.toString() );
           e.printStackTrace();
       }
+
   }
 
 }

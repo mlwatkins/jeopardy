@@ -23,13 +23,14 @@ public class games extends HttpServlet
    // http://localhost:8080/cs4640/examples.simpleform
    
    // input text file (from CSLAB server)
-   private static java.lang.String games_data = "http://plato.cs.virginia.edu/~jte4hm/games.txt";
+   private static java.lang.String games_data = "/Applications/apache-tomcat/webapps/jeopardy/WEB-INF/data/games.txt";
 
    private static final long serialVersionUID = 2L;
    
  //**** setting for local  ****/ 
    private static String LoginServlet = "http://localhost:8080/jeopardy/login";
    private static String LogoutServlet = "http://localhost:8080/jeopardy/logout";
+   private static String CreateServlet = "http://localhost:8080/jeopardy/create";
 
    // a data file containing username and password 
    // note: this is a simple login information without encryption. 
@@ -40,6 +41,8 @@ public class games extends HttpServlet
    private static boolean invalidID = false;
    
    private String user;
+   private String game = ""; 
+   private int numberOfGames = 0;
    
    
    String row = "";
@@ -61,10 +64,25 @@ public class games extends HttpServlet
         res.sendRedirect("http://localhost:8080/jeopardy/form");
       }
 
-      if (req.getParameter("play") != null) {
+      else if (req.getParameter("play") != null) {
         res.sendRedirect("http://localhost:8080/jeopardy/table");
       }
 
+      // else if (req.getParameter("delete") != null) {
+      //   deleteGame(games_data, user, "test");
+      //   res.sendRedirect("http://localhost:8080/jeopardy/form");
+      // }
+      String gameData = readFile(games_data);
+      String[] games = gameData.split("\n");
+      for (int i = 0; i < numberOfGames; i++) {
+        if (req.getParameter("delete" + String.valueOf(i)) != null) {
+          game = games[i].split(",")[0];
+        }      
+      }
+      if (game != "") {
+        deleteGame("/Applications/apache-tomcat/webapps/jeopardy/WEB-INF/data/games.txt", user, game);
+        res.sendRedirect("http://localhost:8080/jeopardy/games");
+      }
       else {
         out.println(" <!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
         out.println("<html xmlns=\"http://www.w3.org/1999/xhtml\"><head>");
@@ -168,8 +186,9 @@ public class games extends HttpServlet
       res.setContentType ("text/html");
       PrintWriter out = res.getWriter ();
 
-      String qaData = readFile(games_data);
-      String[] separatedQs = qaData.split("\n");
+      String gameData = readFile(games_data);
+      String[] games = gameData.split("\n");
+      numberOfGames = games.length;
 
       out.println("<html>");
       out.println("  <head>");
@@ -249,7 +268,9 @@ public class games extends HttpServlet
       out.println("  <br /><br />");
       out.println("    <center><h1> Jeopardy Games List<br /></h1></center>");
       out.println("    <center>");
-
+      out.println("        <form action=\"" + CreateServlet  + "\" method=\"get\">");
+      out.println(" <button type=\"submit\">Create New Game</button>");
+      out.println("</form>");
 
       out.println("    <div class=\"container\">");
       out.println("<table class=\"table\">");
@@ -262,12 +283,12 @@ public class games extends HttpServlet
       out.println("    <th>Action</th> ");
       out.println("  </tr> ");
       out.println(" </thead> ");
-      for (int i = 0; i < separatedQs.length; i++) {
-        String[] data = separatedQs[i].split(",");
+      for (int i = 0; i < games.length; i++) {
+        String[] data = games[i].split(",");
         String game = data[0];
         String owner = data[1];
-         String info = data[2];
-         String description = "";
+        String info = data[2];
+        String description = "";
         for (int x = 1; x < data.length; x++) {
           if (x == data.length - 1) description = description + data[x];
           else description = description + data[x] + ", ";
@@ -286,7 +307,9 @@ public class games extends HttpServlet
       out.println("      <form action=\"http://localhost:8080/jeopardy/form\" method=\"get\">");
       out.println("          <button type=\"submit\" style=\"text-align:center\" name=\"update\" value=\"update\">Update</button>");
       out.println("</form>");
-      out.println("          <button type=\"submit\" style=\"text-align:center\" name=\"delete\" value=\"delete\">Delete</button> ");
+      out.println("      <form action=\"http://localhost:8080/jeopardy/games\" method=\"post\">");
+      out.println("          <button type=\"submit\" style=\"text-align:center\" name=\"delete"+i+"\" value=\"delete\">Delete</button> ");
+      out.println("</form>");
       out.println("      </td> ");
       out.println(" </tr> ");
       }
@@ -299,20 +322,24 @@ public class games extends HttpServlet
       out.close ();  
    }
    
-   private  String readFile(String data)
+   private  String readFile(String filename)
    {
       String cleared_str_data = ""; 
       try 
       {
-         java.net.URL url = new java.net.URL( data );
-         java.net.URLConnection urlcon = url.openConnection();
-         java.io.BufferedReader input_file = new java.io.BufferedReader( new java.io.InputStreamReader( urlcon.getInputStream() ) );
-         java.lang.String line = new java.lang.String();
-         while ((line = input_file.readLine()) != null) {            
-            if (line.length() > 0 && cleared_str_data == "") cleared_str_data = line;  
-            else cleared_str_data += "\n" + line; 
-         }
-         input_file.close();
+        File file = new File(filename);
+        Scanner inputFile = new Scanner(file);
+
+      // Read lines from the file until no more are left.
+        while (inputFile.hasNext())
+        {
+         // Read the next name.
+          String game = inputFile.nextLine();
+          cleared_str_data = cleared_str_data + game + "\n";
+        }
+
+      // Close the file.
+        inputFile.close();
       } catch ( java.lang.Exception e ) {
          System.out.println( "ERROR: Cannot read input file !!" );
       }
@@ -337,6 +364,32 @@ public class games extends HttpServlet
           System.out.println( "Error: cannot write to file " + foldername + filename + " : " + e.toString() );
           e.printStackTrace();
       }
+  }
+
+  private void deleteGame( String filename, String user, String game) {
+    String gameData = readFile(filename);
+    String[] games = gameData.split("\n");
+    try {
+      //String tempFile = "/Applications/apache-tomcat/webapps/jeopardy/WEB-INF/data/tempfile.txt";
+      java.io.File file = new java.io.File( filename );
+      java.io.FileWriter fout = new java.io.FileWriter( file );
+
+      for (int i = 0; i < games.length; i++) {
+        String[] gameInfo = games[i].split(",");
+        boolean gameCheck = gameInfo[0].equals(game);
+        boolean userCheck = gameInfo[1].equals(user);
+        if (gameCheck == false || userCheck == false) {
+          fout.write(gameInfo[0]+","+gameInfo[1]+","+gameInfo[2]+"\n");
+        }
+      }
+      fout.flush();
+      fout.close();
+
+    } catch ( java.io.IOException e ) {
+      System.out.println( "Error: cannot write to file " + filename + " : " + e.toString() );
+      e.printStackTrace();
+    }
+    
   }
 
 }
