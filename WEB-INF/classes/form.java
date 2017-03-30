@@ -84,6 +84,8 @@ public class form extends HttpServlet
       }
       HttpSession session = req.getSession(true);
       user = (String)session.getAttribute("UserID");
+      gameID = (String)session.getAttribute("GameID");
+      description = (String)session.getAttribute("Description");
 
 
       String qaData = readFile(question_data);
@@ -172,15 +174,9 @@ public class form extends HttpServlet
       out.println("    <tr><td colspan=\"4\"><b>Update Game:</b></td></tr>");
       out.println("    <tr>");
       
-      out.println("      <td>Game ID: " + req.getParameter("gameID") + "</td>");
-      out.println("      <td>Description: " + req.getParameter("description") + "</td>");
+      out.println("      <td>Game ID: " + gameID + "</td>");
+      out.println("      <td>Description: " + description + "</td>");
       
-      out.println("    </tr>");
-      out.println("    <tr>");
-      out.println("      <td colspan=\"4\" ><input type=\"submit\" value=\"Create\" name=\"create_btn\"></input>");
-      out.println("    </tr>");
-      out.println("    <tr>");
-      out.println("      <td colspan=\"4\" ><input type=\"submit\" value=\"Update\" name=\"update_btn\"></input>");
       out.println("    </tr>");
       out.println("  </table>");      
       out.println("</form>");

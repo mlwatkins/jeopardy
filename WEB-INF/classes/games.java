@@ -57,6 +57,7 @@ public class games extends HttpServlet
    public void doPost (HttpServletRequest req, HttpServletResponse res)
           throws ServletException, IOException
   {
+      HttpSession session = req.getSession (true);
       res.setContentType ("text/html");
       PrintWriter out = res.getWriter ();
       System.out.println(req.getParameter("update"));
@@ -74,12 +75,19 @@ public class games extends HttpServlet
       // }
       String gameData = readFile(games_data);
       String[] games = gameData.split("\n");
+
       for (int i = 0; i < numberOfGames; i++) {
+        if (req.getParameter("update" + String.valueOf(i)) != null) {
+          session.setAttribute("GameID", games[i].split(",")[0]);
+          session.setAttribute("Description", games[i].split(",")[2]);
+        }      
         if (req.getParameter("delete" + String.valueOf(i)) != null) {
           game = games[i].split(",")[0];
-        }      
+        }  
       }
-      if (game != "") {
+      if ((String)session.getAttribute("GameID") != null) {
+        res.sendRedirect("http://localhost:8080/jeopardy/form");
+      } else if (game != "") {
         deleteGame("/Applications/apache-tomcat/webapps/jeopardy/WEB-INF/data/games.txt", user, game);
         res.sendRedirect("http://localhost:8080/jeopardy/games");
       }
