@@ -16,6 +16,7 @@ public class logout extends HttpServlet
    
    //**** setting for local  ****/    
    private static String GameServlet = "http://localhost:8080/jeopardy/games";
+   private static String LoginServlet = "http://localhost:8080/jeopardy/login";
    
 
    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
@@ -44,7 +45,7 @@ public class logout extends HttpServlet
       {
          session.invalidate();
       }
-      response.sendRedirect(GameServlet);   
+      response.sendRedirect(LoginServlet);   
    }
  
 }
