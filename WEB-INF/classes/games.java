@@ -58,23 +58,28 @@ public class games extends HttpServlet
           throws ServletException, IOException
   {
       HttpSession session = req.getSession (true);
+      user = (String)session.getAttribute("UserID");
+
       res.setContentType ("text/html");
       PrintWriter out = res.getWriter ();
       System.out.println(req.getParameter("update"));
+
+      String gameData = readFile(games_data);
+      String[] games = gameData.split("\n");
+
       if (req.getParameter("update") != null) {
-        res.sendRedirect("http://localhost:8080/jeopardy/form");
+        for (int i = 0; i < games.length; i++) {
+          String[] gameInfo = games[i].split(",");
+          boolean userCheck = gameInfo[1].equals(user);
+          if (userCheck == true) {
+            res.sendRedirect("http://localhost:8080/jeopardy/form");
+          }
+        }
       }
 
       else if (req.getParameter("play") != null) {
         res.sendRedirect("http://localhost:8080/jeopardy/table");
       }
-
-      // else if (req.getParameter("delete") != null) {
-      //   deleteGame(games_data, user, "test");
-      //   res.sendRedirect("http://localhost:8080/jeopardy/form");
-      // }
-      String gameData = readFile(games_data);
-      String[] games = gameData.split("\n");
 
       for (int i = 0; i < numberOfGames; i++) {
         if (req.getParameter("update" + String.valueOf(i)) != null) {
@@ -85,6 +90,7 @@ public class games extends HttpServlet
           game = games[i].split(",")[0];
         }  
       }
+
       if ((String)session.getAttribute("GameID") != null) {
         res.sendRedirect("http://localhost:8080/jeopardy/form");
       } else if (game != "") {

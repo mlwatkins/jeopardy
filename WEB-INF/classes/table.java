@@ -12,15 +12,23 @@ import java.lang.*;
 @WebServlet("/table")
 public class table extends HttpServlet
 {
+
+  private static String LogoutServlet = "http://localhost:8080/jeopardy/logout";
+
+  private String user;
+
+
 	public void doGet (HttpServletRequest req, HttpServletResponse res)
           throws ServletException, IOException
    {
 
    		res.setContentType ("text/html");
-      	PrintWriter out = res.getWriter ();
+      PrintWriter out = res.getWriter ();
+      HttpSession session = req.getSession(true);
+      user = (String)session.getAttribute("UserID");
 
-   		 out.println(" <!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
-        out.println("<html xmlns=\"http://www.w3.org/1999/xhtml\"><head>");
+ 		  out.println(" <!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
+      out.println("<html xmlns=\"http://www.w3.org/1999/xhtml\"><head>");
 
 
         out.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />");
@@ -57,6 +65,8 @@ public class table extends HttpServlet
 
         out.println("#jeopardyTable h3 { color:#ffff5f; text-align:center; font-size:20px; font-weight:bold;}");
 
+        out.println("#jeopardyTable h1 { color:#ffff5f; text-align:center; font-size:30px; font-weight:bold;}");
+
         out.println("#jeopardyTable tbody td, #jeopardyTable thead th {vertical-align: middle;background-color:#2a3698; padding:5px;text-align:center;width:20%;color:#ffff5f;height:60px;font-size:20px;}");
 
         out.println("#jeopardyTable tbody td { cursor:pointer; height:100px; border:3px solid #2a3698;}");
@@ -68,9 +78,20 @@ public class table extends HttpServlet
         out.println("#jeopardyTable tfoot td {text-align: center; background-color:#2a3698;}");
 
         out.println("</style></head>");
-        out.println("      <body><form action=\"form\" method=\"get\">");
-
+        out.println("      <body> ");
+        out.println("  <table width=\"25%\" align=\"right\" bgcolor=\"#E0E0E0\" border=\"0\" cellspacing=\"2\" cellpadding=\"5\"");
+        out.println("    <tr>");
+        out.println("      <td align=\"right\">UserID:  " + user + "</td>" );
+        out.println("      <td>");
+        out.println("        <form action=\"" + LogoutServlet  + "\" method=\"post\">");
+        out.println("          <input type=\"submit\" value=\"Logout\"></input>");     
+        out.println("        </form>");
+        out.println("      </td>");
+        out.println("    </tr>");
+        out.println("  </table>");
+        out.println("<form action=\"form\" method=\"get\">");
         out.println("<table id=\"jeopardyTable\" cellspacing=\"5\" cellpadding=\"0\">");
+        out.println("<h1> Jeopardy Game </h1>");
         out.println("<thead>");
 
         out.println("<tr><th>Sports</th><th>Math</th><th>Celebrities</th><th>History</th><th>Music</th></tr>");

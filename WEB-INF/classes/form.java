@@ -24,6 +24,7 @@ public class form extends HttpServlet
    private static java.lang.String question_data = "http://plato.cs.virginia.edu/~mlw5ea/Assignment-3/actual-data.txt";
    
    private static String LogoutServlet = "http://localhost:8080/jeopardy/logout";
+   private static String GamesServlet = "http://localhost:8080/jeopardy/games";
    private static String FormServlet = "http://localhost:8080/jeopardy/form";
    
    String row = "";
@@ -161,6 +162,15 @@ public class form extends HttpServlet
       out.println("      <td>");
       out.println("        <form action=\"" + LogoutServlet  + "\" method=\"post\">");
       out.println("          <input type=\"submit\" value=\"Logout\"></input>");     
+      out.println("        </form>");
+      out.println("      </td>");
+      out.println("    </tr>");
+      out.println("  </table>");
+      out.println("  <table width=\"25%\" align=\"left\" bgcolor=\"#E0E0E0\" border=\"0\" cellspacing=\"2\" cellpadding=\"5\"");
+      out.println("    <tr>");
+      out.println("      <td>");
+      out.println("        <form action=\"" + GamesServlet  + "\" method=\"post\">");
+      out.println("          <input type=\"submit\" value=\"Back to Games\"></input>");     
       out.println("        </form>");
       out.println("      </td>");
       out.println("    </tr>");
