@@ -77,12 +77,7 @@ public class form extends HttpServlet
    {
       res.setContentType ("text/html");
       PrintWriter out = res.getWriter ();
-      if (req.getParameter("gameID") != null) {
-        gameID = req.getParameter("gameID");
-      }
-      if (req.getParameter("description") != null) {
-        description = req.getParameter("description");
-      }
+      
       HttpSession session = req.getSession(true);
       user = (String)session.getAttribute("UserID");
       gameID = (String)session.getAttribute("GameID");
@@ -169,7 +164,7 @@ public class form extends HttpServlet
       out.println("  <table width=\"25%\" align=\"left\" bgcolor=\"#E0E0E0\" border=\"0\" cellspacing=\"2\" cellpadding=\"5\"");
       out.println("    <tr>");
       out.println("      <td>");
-      out.println("        <form action=\"" + GamesServlet  + "\" method=\"post\">");
+      out.println("        <form action=\"" + GamesServlet  + "\" method=\"get\">");
       out.println("          <input type=\"submit\" value=\"Back to Games\"></input>");     
       out.println("        </form>");
       out.println("      </td>");
@@ -184,8 +179,8 @@ public class form extends HttpServlet
       out.println("    <tr><td colspan=\"4\"><b>Update Game:</b></td></tr>");
       out.println("    <tr>");
       
-      out.println("      <td>Game ID: " + gameID + "</td>");
-      out.println("      <td>Description: " + description + "</td>");
+      out.println("      <td>Game ID: " + gameID + "  " + "\t </td>");
+      out.println("      <td>Description: " + description + " </td>");
       
       out.println("    </tr>");
       out.println("  </table>");      

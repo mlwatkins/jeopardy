@@ -62,30 +62,25 @@ public class games extends HttpServlet
 
       res.setContentType ("text/html");
       PrintWriter out = res.getWriter ();
-      System.out.println(req.getParameter("update"));
 
       String gameData = readFile(games_data);
       String[] games = gameData.split("\n");
+      user = (String)session.getAttribute("UserID");
 
-      if (req.getParameter("update") != null) {
-        for (int i = 0; i < games.length; i++) {
-          String[] gameInfo = games[i].split(",");
-          boolean userCheck = gameInfo[1].equals(user);
-          if (userCheck == true) {
-            res.sendRedirect("http://localhost:8080/jeopardy/form");
-          }
-        }
-      }
-
-      else if (req.getParameter("play") != null) {
+      if (req.getParameter("play") != null) {
         res.sendRedirect("http://localhost:8080/jeopardy/table");
       }
 
       for (int i = 0; i < numberOfGames; i++) {
-        if (req.getParameter("update" + String.valueOf(i)) != null) {
-          session.setAttribute("GameID", games[i].split(",")[0]);
-          session.setAttribute("Description", games[i].split(",")[2]);
-        }      
+        if (req.getParameter("update"+String.valueOf(i)) != null) {
+          String[] gameInfo = games[i].split(",");
+
+          boolean userCheck = gameInfo[1].equals(user);
+          if (userCheck == true) {
+            session.setAttribute("GameID", games[i].split(",")[0]);
+            session.setAttribute("Description", games[i].split(",")[2]);
+          }
+        }  
         if (req.getParameter("delete" + String.valueOf(i)) != null) {
           game = games[i].split(",")[0];
         }  
@@ -96,95 +91,9 @@ public class games extends HttpServlet
       } else if (game != "") {
         deleteGame("/Applications/apache-tomcat/webapps/jeopardy/WEB-INF/data/games.txt", user, game);
         res.sendRedirect("http://localhost:8080/jeopardy/games");
+      } else {
+        res.sendRedirect("http://localhost:8080/jeopardy/games");
       }
-      else {
-        out.println(" <!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
-        out.println("<html xmlns=\"http://www.w3.org/1999/xhtml\"><head>");
-
-
-        out.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />");
-        out.println("<title>Jeopardy</title><meta name=\"ROBOTS\" content=\"NOODP\" />");
-        out.println("<meta name=\"google-site-verification\" content=\"UYS7arlGlbDobqQSsucWwkbZyiC-6_cCWlUn9Eb5b2M\" />");
-        out.println("<link rel=\"shortcut icon\" href=\"/media/favicon.ico\" type=\"image/x-icon\" />");
-        out.println("<link rel=\"icon\" href=\"/media/favicon.ico\" type=\"image/x-icon\" />");
-
-        // To get the styling for this jeopardy table, we inspected the website "https://jeopardylabs.com/play/html-jeopardy9"
-        // I spoke to Professor Upsorn and she said as long as we were just using the styling, that this was okay. 
-
-        out.println("<style type=\"text/css\"> body {");
-          
-        out.println("background-color:#2a3698; height:100%; font-family:Verdana, Arial, Helvetica, sans-serif;padding-bottom:100px; }");
-        out.println("label { display:block; font-size:16px; }");
-        out.println("input, textarea, select { display:block; font-family:Verdana, Arial, Helvetica, sans-serif; margin:auto;}");
-
-        out.println("textarea { padding:5px;  }");
-
-        out.println("#title {");
-        out.println("text-align:center;");
-        out.println("font-size:36px;");
-        out.println("margin:auto;");
-        out.println("line-height:36px; }");
-
-        out.println("textarea#title {");
-        out.println("height:50px;");
-        out.println("width:90%;");
-        out.println("color:#012b45;}");
-
-        out.println("#jeopardyTable { width:100%; background-color:#000000; padding:0; margin:0; margin:auto; font-size:16px;}");
-
-        out.println(" #jeopardyTable textarea { width:90%; height:30px; font-size:18px; line-height:22px;}");
-
-        out.println("#jeopardyTable h3 { color:#ffff5f; text-align:center; font-size:20px; font-weight:bold;}");
-
-        out.println("#jeopardyTable tbody td, #jeopardyTable thead th {vertical-align: middle;background-color:#2a3698; padding:5px;text-align:center;width:20%;color:#ffff5f;height:60px;font-size:20px;}");
-
-        out.println("#jeopardyTable tbody td { cursor:pointer; height:100px; border:3px solid #2a3698;}");
-
-        out.println("#jeopardyTable tbody td.ie-hack { border:3px solid #ffff5f;}");
-
-        out.println("#jeopardyTable tbody td.dirty h3 { color:#2a3698;  }");
-
-        out.println("#jeopardyTable tfoot td {text-align: center; background-color:#2a3698;}");
-
-        out.println("</style></head>");
-
-        out.println("<body><table id=\"jeopardyTable\" cellspacing=\"5\" cellpadding=\"0\">");
-        out.println("<thead>");
-        
-        // Categories
-
-        out.println("<tr><th>Sports</th><th>Math</th><th>Celebrities</th><th>History</th><th>Music</th></tr>");
-
-        out.println("</thead>");
-        out.println("<tbody>");
-
-
-        for (int i = 0; i < 4; i++){
-          out.println("<tr>");
-          for (int j = 0; j < 5; j++) {
-            out.println("<td>" + String.valueOf((i+1)*100) + "</td>");
-          }
-          out.println("</tr>");
-        }
-
-        out.println("</tbody></table>");
-
-        out.println("</body></html>");
-        Enumeration<String> paramNames = req.getParameterNames();
-
-
-        List<String> paramList = new ArrayList<String>();
-        List<String> jeopardyQuestions = new ArrayList<String>();
-        while (paramNames.hasMoreElements()) {
-          paramList.add(req.getParameter(paramNames.nextElement()));
-        }
-
-        int numParams = paramList.size();
-       
-        out.close();
-
-        writeToFile("/Applications/apache-tomcat/webapps/jeopardy/WEB-INF/data/", "jeopardy.txt", paramList);
-    }
   } 
    
    /** *****************************************************
@@ -196,6 +105,9 @@ public class games extends HttpServlet
    {
       HttpSession session = req.getSession(true);
       user = (String)session.getAttribute("UserID");
+      session.setAttribute("GameID", null);
+      session.setAttribute("Description", null);
+
 
       res.setContentType ("text/html");
       PrintWriter out = res.getWriter ();
@@ -318,11 +230,11 @@ public class games extends HttpServlet
       out.println("      <form action=\"http://localhost:8080/jeopardy/table\" method=\"get\">");
       out.println("          <button type=\"submit\" style=\"text-align:center\" name=\"play\" value=\"play\">Play</button>");
       out.println("</form>");
-      out.println("      <form action=\"http://localhost:8080/jeopardy/form\" method=\"get\">");
-      out.println("          <button type=\"submit\" style=\"text-align:center\" name=\"update\" value=\"update\">Update</button>");
+      out.println("      <form action=\"http://localhost:8080/jeopardy/games\" method=\"post\">");
+      out.println("          <button type=\"submit\" style=\"text-align:center\" name=\"update" + i +"\" value=\"update\">Update</button>");
       out.println("</form>");
       out.println("      <form action=\"http://localhost:8080/jeopardy/games\" method=\"post\">");
-      out.println("          <button type=\"submit\" style=\"text-align:center\" name=\"delete"+i+"\" value=\"delete\">Delete</button> ");
+      out.println("          <button type=\"submit\" style=\"text-align:center\" name=\"delete"+ i +"\" value=\"delete\">Delete</button> ");
       out.println("</form>");
       out.println("      </td> ");
       out.println(" </tr> ");

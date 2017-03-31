@@ -72,7 +72,7 @@ public class login extends HttpServlet
       out.println("<html>");
    
       out.println("<head>");
-      out.println("  <title>CS4640 Session example</title>");
+      out.println("  <title>Jeopardy - Login</title>");
    
       out.println("   <style>");
       out.println("      body, html {");
@@ -96,7 +96,7 @@ public class login extends HttpServlet
       out.println("</head>");
 
       out.println("<body onLoad=\"setFocus()\" >");
-      out.println("<b><center><h1>Welcome to CS4640 Survey<h1></center></b>");
+      out.println("<b><center><h1>Jeopardy Game Login<h1></center></b>");
    
       out.println("<br /><br />");
       
