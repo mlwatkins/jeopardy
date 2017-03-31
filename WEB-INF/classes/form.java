@@ -46,7 +46,7 @@ public class form extends HttpServlet
       res.setContentType ("text/html");
       PrintWriter out = res.getWriter ();
       if (req.getParameter("add") != null) {
-        res.sendRedirect("http://localhost/Assignment-3/assignment3.php");
+        res.sendRedirect("http://plato.cs.virginia.edu/~mlw5ea/Assignment-3/assignment3.php");
       } else if (req.getParameter("create") != null) {
         Enumeration<String> paramNames = req.getParameterNames();
 
