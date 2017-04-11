@@ -60,7 +60,23 @@ public class form extends HttpServlet
 
         int numParams = paramList.size();
 
-        writeToFile("/Applications/apache-tomcat/webapps/jeopardy/WEB-INF/data/", "jeopardy.txt", paramList, user, gameID);
+        if (paramList.get(numParams-1) == "create") {
+          paramList.remove(numParams-1);
+        } 
+        int numQuestions = (numParams-1)/4; 
+
+        List<String> questionList = new ArrayList<String>();
+
+        for (int i = 0; i < numQuestions; i++) {
+          if ((req.getParameter("category"+String.valueOf(i)) != "") && (req.getParameter("score"+String.valueOf(i)) != "")) {
+            questionList.add(req.getParameter("question"+String.valueOf(i)));
+            questionList.add(req.getParameter("answer"+String.valueOf(i)));
+            questionList.add(req.getParameter("category"+String.valueOf(i)));
+            questionList.add(req.getParameter("score"+String.valueOf(i)));
+          }
+        }
+
+        writeToFile("/Applications/apache-tomcat/webapps/jeopardy/WEB-INF/data/", "jeopardy.txt", questionList, user, gameID);
         
         res.sendRedirect("http://localhost:8080/jeopardy/table");
       } 
@@ -250,16 +266,53 @@ public class form extends HttpServlet
       try {
           java.io.File file = new java.io.File( foldername, filename );
           java.io.FileWriter fout = new java.io.FileWriter( file , true);
-          //user = (String)session.getAttribute("UserID");
-          // have user enter a game name
-          fout.write("User:"+user+"\n");
-          fout.write("GameID:"+name+"\n");
-          for (int i = 0; i < str.size(); i++) {
-            fout.write( str.get(i) + "," );
+
+          Scanner inputFile = new Scanner(file);
+
+          java.io.File tempFile = new java.io.File( foldername, "temp-games.txt" );
+          java.io.FileWriter tout = new java.io.FileWriter( tempFile , false);
+
+          // Read lines from the file until no more are left.
+          while (inputFile.hasNext())
+          {
+         // Read the next name.
+            String data = inputFile.nextLine();
+            if (data.contains("User:")) {
+              String[] userCheck = data.split(":");
+              String data2 = inputFile.nextLine();
+              String[] gameCheck = data2.split(":");
+              if ((userCheck[1] == user) && (gameCheck[1] == name)) {
+                tout.write("User:"+user+"\n");
+                tout.write("GameID:"+name+"\n");
+                for (int i = 0; i < str.size(); i++) {
+                  tout.write( str.get(i) + "," );
+                }
+                tout.write("\n");
+                tout.write("\n");
+              } else {
+                tout.write(data + "\n");
+                tout.write(data2 + "\n");
+              }
+            } else {
+              tout.write(data + "\n");
+            }
+            
           }
-          fout.write("\n");
-          fout.flush();
-          fout.close();
+
+          
+          tout.flush();
+          tout.close();
+          // Close the file.
+          inputFile.close();
+          // have user enter a game name
+          // fout.write("User:"+user+"\n");
+          // fout.write("GameID:"+name+"\n");
+          // for (int i = 0; i < str.size(); i++) {
+          //   fout.write( str.get(i) + "," );
+          // }
+
+          boolean success = tempFile.renameTo(file);
+          
       } catch ( java.io.IOException e ) {
           System.out.println( "Error: cannot write to file " + foldername + filename + " : " + e.toString() );
           e.printStackTrace();
