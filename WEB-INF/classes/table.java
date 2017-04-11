@@ -111,7 +111,9 @@ public class table extends HttpServlet
         out.println("</tbody></table>");
 
         out.println("</body>");
-        out.println("<button style=\"text-align:center\" alight=\"right\" type=\"submit\" name=\"back\" value=\"back\"><b>Back</b></button></html>");
+        out.println("<button style=\"text-align:center\" alight=\"right\" type=\"submit\" name=\"back\" value=\"back\"><b>Back</b></button>");
+        out.println("<button style=\"text-align:center\" alight=\"right\" type=\"submit\" name=\"settings\" value=\"settings\"><b>Settings</b></button></html>");
+
         out.println("      </form>"); 
         
         out.close();
@@ -123,11 +125,13 @@ public class table extends HttpServlet
    {
    		res.setContentType ("text/html");
       	PrintWriter out = res.getWriter ();
-      	out.println("alsdkjfalskjdfas");
-        out.println(req.getParameter("back"));
    		if (req.getParameter("back") != null) {
         	res.sendRedirect("http://localhost:8080/jeopardy/form");
       	}
+
+      if (req.getParameter("settings") != null) {
+        res.sendRedirect("http://localhost:8080/jeopardy/settings");
+      }
 
       	out.close();
    }
