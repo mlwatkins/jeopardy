@@ -189,7 +189,6 @@
     }
     </script>
 
-
 	<form action="play.jsp" method="post">
 		<button style="text-align:center" alight="right" type="submit" name="back" value="back"><b>Back</b></button>
 	</form>
