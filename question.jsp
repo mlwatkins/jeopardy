@@ -12,33 +12,42 @@
 <%
 	String LogoutServlet = "http://localhost:8080/jeopardy/logout";
     String user = (String)session.getAttribute("UserID");
-    String game = (String)session.getAttribute("GameID");
+    //String game = (String)session.getAttribute("GameID");
+
+    String game = "test";
 
     String category = (String)session.getAttribute("Category");
-    String score = (String)session.getAttribute("Score");
+    Integer score = (Integer)session.getAttribute("Score");
+
+    out.println(category);
+    out.println(score);
 
     String filename = "/Applications/apache-tomcat/webapps/jeopardy/WEB-INF/data/" + game + ".txt";
 
-    String question;
+    String question = "";
     String answer;
 
     //java.io.File file = new java.io.File(filename);
-    FileReader fr = new FileReader(filename);
-    BufferedReader br = new BufferedReader(fr);
+    try {
+	    java.io.FileReader fr = new java.io.FileReader(filename);
+	    java.io.BufferedReader br = new java.io.BufferedReader(fr);
 
-    String s; 
-    ArrayList<String> data;
+	    String s; 
+	    String[] data;
 
-    while(s = br.readLine() != null) {
-    	data = s.split(",");
+	    while ((s = br.readLine()) != null) {
+	    	data = s.split(",");
 
-    	if ((data[2] == category) && (data[3] == score)) {
-    		question = data[0];
-    		answer = data[1];
-    	}
-    	
+	    	if ((data[2] == category) && (Integer.parseInt(data[3]) == score)) {
+	    		question = data[0];
+	    		out.println(question);
+	    		answer = data[1];
+	    	}
+	    	
+		}
+	} catch (IOException e) {
+		out.println(game + "   - No file");
 	}
-
 
 
 %>
@@ -104,9 +113,22 @@
 
         #jeopardyTable h1 { color:#ffff5f; text-align:center; font-size:30px; font-weight:bold;}
 
-        #jeopardyTable tbody td, #jeopardyTable thead th {vertical-align: middle;background-color:#2a3698; padding:5px;text-align:center;width:20%;color:#ffff5f;height:60px;font-size:20px;}
+        #jeopardyTable tbody td, #jeopardyTable thead th { 
+        	vertical-align: middle;
+        	background-color:#2a3698; 
+        	padding:5px;
+        	text-align:center;
+        	width:20%;
+        	color:#ffff5f;
+        	height:60px;
+        	font-size:20px;
+        }
 
-        #jeopardyTable tbody td { cursor:pointer; height:100px; border:3px solid #2a3698;}
+        #jeopardyTable tbody td { 
+        	cursor:pointer; 
+        	height:100px; 
+        	border:3px solid #2a3698;
+        }
 
         #jeopardyTable tbody td.ie-hack { border:3px solid #ffff5f;}
 

@@ -28,7 +28,7 @@
         <!-- To get the styling for this jeopardy table, we inspected the website "https://jeopardylabs.com/play/html-jeopardy9"
         I spoke to Professor Upsorn and she said as long as we were just using the styling, that this was okay.  -->
 
-        <style type="text/css"> 
+<style type="text/css"> 
 
         body {  
         	background-color:#2a3698; 
@@ -56,6 +56,9 @@
 		color:#ffff5f;
 		}
 
+		.hide {
+			display:none;
+		}
 
         #title {
 	        text-align:center;
@@ -86,25 +89,62 @@
 
         #jeopardyTable tfoot td {text-align: center; background-color:#2a3698;}
 
-        </style></head>
-              <body> 
-          <table width="25%" align="right" bgcolor="#E0E0E0" border="0" cellspacing="2" cellpadding="5"
+        </style>
+
+
+       	<script>
+
+       	function showQuestion(count) {
+
+       		// Sending category, score 
+
+       		var num = parseInt(arguments[0]);
+
+
+       		if (num % 5 == 0) {
+       			<%session.setAttribute("Category", "Music");%>
+       		} else if (num % 5 == 1) {
+       			<%session.setAttribute("Category", "Sports");%>
+       		} else if (num % 5 == 2) {
+       			<%session.setAttribute("Category", "Math");%>
+       		} else if (num % 5 == 3) {
+       			<%session.setAttribute("Category", "Celebrities");%>
+       		} else if (num % 5 == 4){
+       			<%session.setAttribute("Category", "History");%>
+       		}
+
+       		if (num <= 5) {
+       			<%session.setAttribute("Score", 100);%>
+       		} else if (num <= 10) {
+       			<%session.setAttribute("Score", 200);%>
+       		} else if (num <= 15) {
+       			<%session.setAttribute("Score", 300);%>
+       		} else if (num <= 20) {
+       			<%session.setAttribute("Score", 400);%>
+       		}
+
+       		window.location = "question.jsp";
+
+       	}
+       	</script>
+        </head>
+             <body> 
+          <table width="25%" align="right" bgcolor="#E0E0E0" border="0" cellspacing="2" cellpadding="5">
             <tr>
-            	<!-- NEED TO GET USER INFO -->
               <td align="right">UserID: <% out.println(user); %> </td>
               <td>
-                <form action="" + LogoutServlet  + "" method="post">
+                <form action="http://localhost:8080/jeopardy/logout" method="post">
                   <input type="submit" value="Logout"></input>     
                 </form>
               </td>
             </tr>
           </table>
-        <form action="form" method="get">
+        <form action="question.jsp">
         <table id="jeopardyTable" cellspacing="5" cellpadding="0">
         <h1> Jeopardy Game </h1>
         <thead>
 
-        <tr><th>Sports</th><<th>Math</th><th>Celebrities</th><th>History</th><th>Music</th></tr>
+        <tr><th>Sports</th><th>Math</th><th>Celebrities</th><th>History</th><th>Music</th></tr>
 
         </thead>
         <tbody>
@@ -116,19 +156,24 @@
           out.println("<tr>");
           for (int j = 0; j < 5; j++) {
             String score = String.valueOf((i+1)*100); 
-            out.println("<td id=\"score" + count + "\"> <a href=\"question.jsp\">" + score);
+            out.println("<td id=\"score" + count + "\" onclick=\"showQuestion("+count+"\")>"+ score +"</td>");
+            //out.println("<div class=\"hide\">");
+            //out.println("<div id=\"q" + count + "\">Question</div>");
+            //out.println("<div id=\"a" + count + "\">Answer</div>");
+            //out.println("</div>");
             count += 1; 
            }
 
         %>
-        	</td>
+  
         </tr>
         <%
         }
 		%>
 
 
-        </tbody></table>
+        </tbody>
+        </table>
 
         </body>
         <button style="text-align:center" alight="right" type="submit" name="back" value="back"><b>Back</b></button>
