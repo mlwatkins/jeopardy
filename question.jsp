@@ -16,38 +16,12 @@
 
     String game = "test";
 
-    String category = (String)session.getAttribute("Category");
-    Integer score = (Integer)session.getAttribute("Score");
-
-    out.println(category);
-    out.println(score);
-
     String filename = "/Applications/apache-tomcat/webapps/jeopardy/WEB-INF/data/" + game + ".txt";
 
     String question = "";
     String answer;
 
     //java.io.File file = new java.io.File(filename);
-    try {
-	    java.io.FileReader fr = new java.io.FileReader(filename);
-	    java.io.BufferedReader br = new java.io.BufferedReader(fr);
-
-	    String s; 
-	    String[] data;
-
-	    while ((s = br.readLine()) != null) {
-	    	data = s.split(",");
-
-	    	if ((data[2] == category) && (Integer.parseInt(data[3]) == score)) {
-	    		question = data[0];
-	    		out.println(question);
-	    		answer = data[1];
-	    	}
-	    	
-		}
-	} catch (IOException e) {
-		out.println(game + "   - No file");
-	}
 
 
 %>
@@ -136,12 +110,67 @@
 
         #jeopardyTable tfoot td {text-align: center; background-color:#2a3698;}
 
-        </style>
+</style>
+    
     </head>
 	<body>
+    <% int num = Integer.parseInt(request.getParameter("param")); %>
+
+    <%
+
+            if (num % 5 == 0) {
+                session.setAttribute("Category", "Music");
+            } else if (num % 5 == 1) {
+                session.setAttribute("Category", "Sports");
+            } else if (num % 5 == 2) {
+                session.setAttribute("Category", "Math");
+            } else if (num % 5 == 3) {
+                session.setAttribute("Category", "Celebrities");
+            } else if (num % 5 == 4){
+                session.setAttribute("Category", "History");
+            }
+
+            if (num <= 5) {
+                session.setAttribute("Score", 100);
+            } else if (num <= 10) {
+                session.setAttribute("Score", 200);
+            } else if (num <= 15) {
+                session.setAttribute("Score", 300);
+            } else if (num <= 20) {
+                session.setAttribute("Score", 400);
+            }
+    %>
+
+
 	<% 
+        String category = (String)session.getAttribute("Category");
+        Integer score = (Integer)session.getAttribute("Score");
+
+        java.io.FileReader fr = new java.io.FileReader(filename);
+        java.io.BufferedReader br = new java.io.BufferedReader(fr);
+
+        String s; 
+        String[] data;
+
+        while ((s = br.readLine()) != null) {
+            data = s.split(",");
+
+            if ((data[2].equals(category)) && (Integer.parseInt(data[3]) == score)) {
+                question = data[0];
+                answer = data[1];
+            }
+            
+        }
+
 		out.println(question);
 	%>
+
+    <form action="" method="post">
+    <button style="display:none" on
+
+    </form>
+
+
 	<form action="play.jsp" method="post">
 		<button style="text-align:center" alight="right" type="submit" name="back" value="back"><b>Back</b></button>
 	</form>
