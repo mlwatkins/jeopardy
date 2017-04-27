@@ -129,6 +129,7 @@
         <form action="form">
         <table id="jeopardyTable" cellspacing="5" cellpadding="0">
         <h1 style="color:#ffff5f;"> Jeopardy Game </h1>
+        <p style="color:#ffff5f;"> Jason Ellington & Madeline Watkins </p>
         <button style="text-align:center" alight="right" type="submit" name="back" value="back"><b>Back</b></button>
         <button style="text-align:center" alight="right" type="submit" name="settings" value="settings"><b>Settings</b></button>
         <thead>
@@ -140,7 +141,12 @@
 
 
         <% 
-
+        ArrayList<Integer> list = new ArrayList<Integer>();
+        if (session.getAttribute("counter") == null ){
+          session.setAttribute("counter", list);
+      } else {
+        list = (ArrayList<Integer>)session.getAttribute("counter");
+        }
 
         int numteams = 0;
         if (request.getParameter("teams") != null) {
@@ -154,7 +160,11 @@
           out.println("<tr>");
           for (int j = 0; j < 5; j++) {
             String score = String.valueOf((i+1)*100); 
-            out.println("<td id=\"score" + count + "\" onclick=\"showQuestion("+count+")\">"+ score);
+              if(list.contains(count)) {
+                out.println("<td></td>");
+            } else {
+              out.println("<td id=\"score" + count + "\" onclick=\"showQuestion("+count+")\">"+ score +"</td>");
+            }
             count += 1; 
            }
 

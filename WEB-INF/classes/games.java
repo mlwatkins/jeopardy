@@ -182,6 +182,8 @@ public class games extends HttpServlet
       out.println("   </style>");
       out.println("  </head>");
       out.println("  <body>");
+      out.println("<b><center><p>Jason Ellington & Madeline Watkins<p></center></b>");
+      
       out.println("  <table width=\"25%\" align=\"right\" bgcolor=\"#E0E0E0\" border=\"0\" cellspacing=\"2\" cellpadding=\"5\"");
       out.println("    <tr>");
       out.println("      <td align=\"right\">UserID:  " + user + "</td>" );
