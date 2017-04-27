@@ -120,12 +120,13 @@
 
 
         <% 
+        int numteams = Integer.parseInt(request.getParameter("teams"));
         int count = 1; 
         for (int i = 0; i < 4; i++){
           out.println("<tr>");
           for (int j = 0; j < 5; j++) {
             String score = String.valueOf((i+1)*100); 
-            out.println("<td id=\"score" + count + "\" onclick=\"showQuestion("+count+")\">"+ score);
+            out.println("<td id=\"score" + count + "\" onclick=\"showQuestion("+count+", " + numteams+ ")\">"+ score);
             count += 1; 
            }
 
@@ -142,7 +143,7 @@
          </form> 
 
          <%
-         int numteams = Integer.parseInt(request.getParameter("teams"));
+         
 
          String[] teams = new String[numteams];
          Integer[] scores = new Integer[numteams];
@@ -173,17 +174,31 @@
          <tr>
          <%
          for (int i = 0; i < numteams; i++) {
-            out.println("<td>Score: " + scores[i] + "</td>");
-
+            out.println("<td>Score: <input type=number id=\"score" + i + "\"></td>");
           }
          %>
+
+
+          <script>
+          function addScore(i) {
+            var str = "score" + (String)(i);
+            document.getElementById(str).stepUp(100);
+          }
+
+          function subScore(i) {
+              var str = "score" + (String)(i);
+              document.getElementById(str).stepDown(100);
+          }
+          </script>
+
          </tr>
          <tr>
          <%
          for (int i = 0; i < numteams; i++) {
-         out.println("<td><button onclick=\"addScore()\">Add to Score</button></td>");
-         out.println("<td><button onclick=\"subScore()\">Subtract from Score</button></td>");
-       }
+
+            out.println("<td><button onclick=\"addScore(" + i + ")\">Add</button>");
+            out.println("<button onclick=\"subScore(" + i + ")\">Sub</button></td>");
+          }
          %>
          </tr>
          </tbody>
