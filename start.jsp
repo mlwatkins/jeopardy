@@ -14,6 +14,7 @@
 <%
     String LogoutServlet = "http://localhost:8080/jeopardy/logout";
     String user = (String)session.getAttribute("UserID");
+    session.setAttribute("counter", new ArrayList<Integer>());
 %>
 
 
@@ -103,10 +104,11 @@
       </td>
     </tr>
   </table>
-  <h2>Jeopardy</h2>
-  <h4>Please select the number of teams playing this game.</h4>
+  <h4>Jason Ellington & Madeline Watkins</h4>
+  <center><h2>Jeopardy</h2></center>
+  <center><h4>Please select the number of teams playing this game.</h4></center>
       
-    <form action="play.jsp">
+   <center> <form action="play.jsp">
     <label>Number of Teams: </label>
       <select name="teams" id="teams">
         <option value="1" id="numteams">1 Team</option>
@@ -114,8 +116,8 @@
         <option value="3" id="numteams">3 Teams</option>
         <option value="4" id="numteams">4 Teams</option>
       </select>
-        <button type="submit" style="text-align:center" name="start" value="start" onclick="redirectPlay()">Play</button>
-    </form>
+        <center><button type="submit" style="text-align:center" name="start" value="start" onclick="redirectPlay()">Play</button></center>
+    </form><center>
 
 </body>
 <script>

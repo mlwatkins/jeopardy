@@ -98,6 +98,8 @@ public class login extends HttpServlet
 
       out.println("<body onLoad=\"setFocus()\" >");
       out.println("<b><center><h1>Jeopardy Game Login<h1></center></b>");
+      out.println("<b><center><p>Jason Ellington & Madeline Watkins<p></center></b>");
+
    
       out.println("<br /><br />");
       

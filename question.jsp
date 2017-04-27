@@ -21,9 +21,14 @@
     String question = "";
     String answer = "";
 
-    if (session.getAttribute("UsedQs") != null) {
 
-}
+    ArrayList<Integer> list = (ArrayList<Integer>)session.getAttribute("counter");
+    list.add(Integer.parseInt(request.getParameter("param")));
+    session.setAttribute("counter", list);
+
+
+    //java.io.File file = new java.io.File(filename);
+
 
 
 %>
@@ -121,13 +126,13 @@
     
     </head>
 	<body>
-    <% 
-    int num = Integer.parseInt(request.getParameter("param")); 
-    if (session.getAttribute("UsedQs") != null) {
-        ArrayList<Integer> list = session.getAttribute("UsedQs");
-        
-    }
-    %>
+
+    <form action="play.jsp" method="post">
+        <button style="text-align:center" alight="right" type="submit" name="back" value="back"><b>Back</b></button>
+    </form>
+    <center><p style="color:#ffff5f;">Jason Ellington & Madeline Watkins </p></center>
+    <% int num = Integer.parseInt(request.getParameter("param")); %>
+
 
     <%
 
@@ -175,13 +180,13 @@
             
         }
 
-		out.println(question);
+		out.println("<center><h1 style=\"color:#ffff5f;\">Question: \n" + question + "</h1></center>");
 	%>
 
-    <button onclick="myFunction()">Answer</button>
+    <center><button onclick="myFunction()">Answer</button></center>
 
     <div id="myDIV">
-    <% out.println(answer); %>
+    <% out.println("<center><h4 style=\"color:#ffffff;\">Answer: \n" + answer + "</h4></center>"); %>
     </div>
 
 
@@ -196,10 +201,6 @@
         }
     }
     </script>
-
-	<form action="play.jsp" method="post">
-		<button style="text-align:center" alight="right" type="submit" name="back" value="back"><b>Back</b></button>
-	</form>
 	</body>
 
 
