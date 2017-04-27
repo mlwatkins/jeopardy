@@ -118,12 +118,12 @@
     </form>
 
 </body>
-                            <script>
+<script>
 
-                            function redirectPlay() {
-                              var numTeam = Integer(getElementById("numteams")); 
-                              window.location = "play.jsp?param="+numTeam; 
-                            }
+ function redirectPlay() {
+  var param = Integer(getElementById("numteams")); 
+  window.location = "play.jsp?param="+param; 
+}
 
                             </script>
 

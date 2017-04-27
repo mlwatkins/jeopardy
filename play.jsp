@@ -105,6 +105,7 @@
               </td>
             </tr>
           </table>
+          
         <form action="form">
         <table id="jeopardyTable" cellspacing="5" cellpadding="0">
         <h1 style="color:#ffff5f;"> Jeopardy Game </h1>
@@ -139,5 +140,57 @@
         </tbody>
         </table>
          </form> 
+
+         <%
+         int numteams = Integer.parseInt(request.getParameter("teams"));
+
+         String[] teams = new String[numteams];
+         Integer[] scores = new Integer[numteams];
+
+
+
+         for (int i = 1; i <= numteams; i++) {
+            teams[i-1] = "Team " + String.valueOf(i);
+            if (scores[i-1] == null) {
+              scores[i-1] = 0;
+            }
+        }
+         %>
+
+         <table id="scoreTable" cellspacing="5" cellpadding="0">
+          <h1 style="color:#ffff5f;"> Scores</h1>
+         <thead>
+         <tr>
+         <%
+         for (int i = 0; i < numteams; i++) {
+            out.println("<td>" + teams[i] + "</td>");
+         }
+         %>
+         </tr>
+
+         </thead>
+         <tbody>
+         <tr>
+         <%
+         for (int i = 0; i < numteams; i++) {
+            out.println("<td>Score: " + scores[i] + "</td>");
+
+          }
+         %>
+         </tr>
+         <tr>
+         <%
+         for (int i = 0; i < numteams; i++) {
+         out.println("<td><button onclick=\"addScore()\">Add to Score</button></td>");
+         out.println("<td><button onclick=\"subScore()\">Subtract from Score</button></td>");
+       }
+         %>
+         </tr>
+         </tbody>
+
+         </table>
+
         </body>
+
+        
         </html>
