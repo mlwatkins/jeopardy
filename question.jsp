@@ -12,9 +12,7 @@
 <%
 	String LogoutServlet = "http://localhost:8080/jeopardy/logout";
     String user = (String)session.getAttribute("UserID");
-    //String game = (String)session.getAttribute("GameID");
-
-    String game = "test";
+    String game = (String)session.getAttribute("GameID");
 
     String filename = "/Applications/apache-tomcat/webapps/jeopardy/WEB-INF/data/" + game + ".txt";
 
@@ -163,7 +161,7 @@
 	<% 
         String category = (String)session.getAttribute("Category");
         Integer score = (Integer)session.getAttribute("Score");
-
+        try {
         java.io.FileReader fr = new java.io.FileReader(filename);
         java.io.BufferedReader br = new java.io.BufferedReader(fr);
 
@@ -179,6 +177,9 @@
             }
             
         }
+    } catch (IOException e) {
+    out.println("File not found");
+}
 
 		out.println("<center><h1 style=\"color:#ffff5f;\">Question: \n" + question + "</h1></center>");
 	%>

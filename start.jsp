@@ -15,6 +15,7 @@
     String LogoutServlet = "http://localhost:8080/jeopardy/logout";
     String user = (String)session.getAttribute("UserID");
     session.setAttribute("counter", new ArrayList<Integer>());
+    session.setAttribute("TeamScores", new ArrayList<Integer>());
 %>
 
 
@@ -116,8 +117,13 @@
         <option value="3" id="numteams">3 Teams</option>
         <option value="4" id="numteams">4 Teams</option>
       </select>
-        <center><button type="submit" style="text-align:center" name="start" value="start" onclick="redirectPlay()">Play</button></center>
-    </form><center>
+        <center><button type="submit" style="text-align:center" name="start" value="start" onclick="redirectPlay()">Play</button>
+        </form>
+        <form action="games" method="get">
+        <button type="submit" style="text-align:center" name="back" value="back">Back to Browse</button>
+        </form>
+        </center>
+    <center>
 
 </body>
 <script>

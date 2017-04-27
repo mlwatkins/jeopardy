@@ -67,9 +67,6 @@ public class games extends HttpServlet
       String[] games = gameData.split("\n");
       user = (String)session.getAttribute("UserID");
 
-      if (req.getParameter("play") != null) {
-        res.sendRedirect("http://localhost:8080/jeopardy/start.jsp");
-      }
 
       for (int i = 0; i < numberOfGames; i++) {
         if (req.getParameter("update"+String.valueOf(i)) != null) {
@@ -80,22 +77,26 @@ public class games extends HttpServlet
             session.setAttribute("GameID", games[i].split(",")[0]);
             session.setAttribute("Description", games[i].split(",")[2]);
           }
-        }  
-        if (req.getParameter("delete" + String.valueOf(i)) != null) {
+        }
+        if ((String)session.getAttribute("GameID") != null) {
+          res.sendRedirect("http://localhost:8080/jeopardy/form");
+        }   
+        else if (req.getParameter("delete" + String.valueOf(i)) != null) {
           game = games[i].split(",")[0];
         }  
+        else if (req.getParameter("play" + String.valueOf(i)) != null ) {
+          session.setAttribute("GameID", games[i].split(",")[0]);
+
+          res.sendRedirect("http://localhost:8080/jeopardy/start.jsp");
+        }
       }
 
-      if ((String)session.getAttribute("GameID") != null) {
-        res.sendRedirect("http://localhost:8080/jeopardy/form");
-      } else if (game != "") {
+      if (game != "") {
         String game_file = "/Applications/apache-tomcat/webapps/jeopardy/WEB-INF/data/" + game + ".txt";
         String list_file = "/Applications/apache-tomcat/webapps/jeopardy/WEB-INF/data/games.txt";
         deleteGame(list_file, game_file, user, game);
         res.sendRedirect("http://localhost:8080/jeopardy/games");
-      } else {
-        res.sendRedirect("http://localhost:8080/jeopardy/games");
-      }
+      } 
   } 
    
    /** *****************************************************
@@ -231,8 +232,8 @@ public class games extends HttpServlet
       out.println(" <td>" + owner + " </td> ");
       out.println("   <td>" + info + " </td> ");
       out.println("<td> ");
-      out.println("      <form action=\"http://localhost:8080/jeopardy/start.jsp\" method=\"get\">");
-      out.println("          <button type=\"submit\" style=\"text-align:center\" name=\"play\" value=\"play\">Play</button>");
+      out.println("      <form action=\"http://localhost:8080/jeopardy/games\" method=\"post\">");
+      out.println("          <button type=\"submit\" style=\"text-align:center\" name=\"play" + i +"\" value=\"play\">Play</button>");
       out.println("</form>");
       out.println("      <form action=\"http://localhost:8080/jeopardy/games\" method=\"post\">");
       out.println("          <button type=\"submit\" style=\"text-align:center\" name=\"update" + i +"\" value=\"update\">Update</button>");

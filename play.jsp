@@ -14,26 +14,6 @@
     String user = (String)session.getAttribute("UserID");
     String game = (String)session.getAttribute("GameID");
 %>
-<%!
-    public Map<Integer, Integer> scores = new HashMap<Integer, Integer>();
-%>
-<%!
-    private void addScore(int i) {
-      int score = scores.get(i+1);
-      score += 100;
-      scores.remove(i+1);
-      scores.put(i+1, score);
-      //session.setAttribute("TeamScores", scores);
-  }
-
-  private void subScore(int i) {
-      int score = scores.get(i+1);
-      score -= 100;
-      scores.remove(i+1);
-      scores.put(i+1, score);
-      //session.setAttribute("TeamScores", scores);
-  }
-%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"><head>
@@ -126,12 +106,16 @@
             </tr>
           </table>
           
-        <form action="form">
+        <form action="start.jsp">
         <table id="jeopardyTable" cellspacing="5" cellpadding="0">
         <h1 style="color:#ffff5f;"> Jeopardy Game </h1>
         <p style="color:#ffff5f;"> Jason Ellington & Madeline Watkins </p>
+        <form action="start.jsp" method="post">
         <button style="text-align:center" alight="right" type="submit" name="back" value="back"><b>Back</b></button>
-        <button style="text-align:center" alight="right" type="submit" name="settings" value="settings"><b>Settings</b></button>
+        </form>
+        <form action="games" method="get">
+        <button style="text-align:center" alight="right" type="submit" name="settings" value="settings"><b>Browse Games</b></button>
+        </form>
         <thead>
 
         <tr><th>Sports</th><th>Math</th><th>Celebrities</th><th>History</th><th>Music</th></tr>
@@ -186,23 +170,35 @@
 
          String[] teams = new String[numteams];
 
+         ArrayList<Integer> scores = (ArrayList<Integer>)session.getAttribute("TeamScores");
 
+         if (scores.isEmpty()) {
+            for (int i = 0; i < numteams; i++ ){
+              scores.add(i,0);
+            }
+            session.setAttribute("TeamScores", scores);
+          } else {
 
+            for (int i = 0; i < numteams; i++) {
+              if (request.getParameter("add"+String.valueOf(i)) != null ) {
+                int score = scores.get(i);
+                score += 100;
+                scores.add(i, score);
+              } else if (request.getParameter("sub"+i) != null) {
+                int score = scores.get(i);
+                score -= 100;
+                scores.add(i, score);
+              }
+            }
+            session.setAttribute("TeamScores", scores);
+        }
 
 
          for (int i = 1; i <= numteams; i++) {
             teams[i-1] = "Team " + String.valueOf(i);
-            if (scores.get(i) == null) {
-              scores.put(i, 0);
-            }
         }
-          session.setAttribute("TeamScores", scores); 
+        
 
-          if (request.getParameter("add") != null) {
-            addScore(0);
-        } else if (request.getParameter("sub") != null) {
-            subScore(0);
-      }
          %>
 
          <table id="scoreTable" cellspacing="5" cellpadding="0">
@@ -221,16 +217,18 @@
          <tr>
          <%
          for (int i = 0; i < numteams; i++) {
-            out.println("<td>Score: <input readonly type=\"text\" value=\"" + scores.get(i+1) + "\" id=\"scores" + i + "\"></td>");
-          }
+            out.println("<td>Score: <input readonly type=\"text\" value=\"" + String.valueOf(scores.get(i)) + "\" id=\"scores" + i + "\"></td>");
+          } 
          %>
 
          </tr>
          <tr>
          <%
          for (int i = 0; i < numteams; i++) {
-            out.println("<td><input type=\"submit\" id=\"add\" value=\"Add\"/>");
-            out.println("<input type=\"submit\" id=\"sub\" value=\"Sub\"/></td>");
+            out.println("<form action=\"play.jsp\" method=\"post\">");
+            out.println("<td><input type=\"submit\" name=\"add" + i +"\" value=\"Add\"/>");
+            out.println("<input type=\"submit\" name=\"sub" + i +"\" value=\"Sub\"/></td>");
+            out.println("</form>");
           }
          %>
          </tr>
