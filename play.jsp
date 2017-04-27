@@ -10,9 +10,29 @@
 
 
 <%
-	String LogoutServlet = "http://localhost:8080/jeopardy/logout";
+	 String LogoutServlet = "http://localhost:8080/jeopardy/logout";
     String user = (String)session.getAttribute("UserID");
     String game = (String)session.getAttribute("GameID");
+%>
+<%!
+    public Map<Integer, Integer> scores = new HashMap<Integer, Integer>();
+%>
+<%!
+    private void addScore(int i) {
+      int score = scores.get(i+1);
+      score += 100;
+      scores.remove(i+1);
+      scores.put(i+1, score);
+      //session.setAttribute("TeamScores", scores);
+  }
+
+  private void subScore(int i) {
+      int score = scores.get(i+1);
+      score -= 100;
+      scores.remove(i+1);
+      scores.put(i+1, score);
+      //session.setAttribute("TeamScores", scores);
+  }
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -120,6 +140,8 @@
 
 
         <% 
+
+
         int numteams = 0;
         if (request.getParameter("teams") != null) {
           numteams = Integer.parseInt(request.getParameter("teams"));
@@ -152,16 +174,24 @@
          
 
          String[] teams = new String[numteams];
-         Integer[] scores = new Integer[numteams];
+
+
 
 
 
          for (int i = 1; i <= numteams; i++) {
             teams[i-1] = "Team " + String.valueOf(i);
-            if (scores[i-1] == null) {
-              scores[i-1] = 0;
+            if (scores.get(i) == null) {
+              scores.put(i, 0);
             }
         }
+          session.setAttribute("TeamScores", scores); 
+
+          if (request.getParameter("add") != null) {
+            addScore(0);
+        } else if (request.getParameter("sub") != null) {
+            subScore(0);
+      }
          %>
 
          <table id="scoreTable" cellspacing="5" cellpadding="0">
@@ -180,30 +210,16 @@
          <tr>
          <%
          for (int i = 0; i < numteams; i++) {
-            out.println("<td>Score: <input type=number id=\"score" + i + "\"></td>");
+            out.println("<td>Score: <input readonly type=\"text\" value=\"" + scores.get(i+1) + "\" id=\"scores[" + i + "]\"></td>");
           }
          %>
-
-
-          <script>
-          function addScore(i) {
-            var str = "score" + (String)(i);
-            document.getElementById(str).stepUp(100);
-          }
-
-          function subScore(i) {
-              var str = "score" + (String)(i);
-              document.getElementById(str).stepDown(100);
-          }
-          </script>
 
          </tr>
          <tr>
          <%
          for (int i = 0; i < numteams; i++) {
-
-            out.println("<td><button onclick=\"addScore(" + i + ")\">Add</button>");
-            out.println("<button onclick=\"subScore(" + i + ")\">Sub</button></td>");
+            out.println("<td><input type=\"submit\" id=\"add\" value=\"Add\"/>");
+            out.println("<input type=\"submit\" id=\"sub\" value=\"Sub\"/></td>");
           }
          %>
          </tr>
