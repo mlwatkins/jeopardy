@@ -105,9 +105,11 @@
               </td>
             </tr>
           </table>
-        <form action="question.jsp">
+        <form action="form">
         <table id="jeopardyTable" cellspacing="5" cellpadding="0">
         <h1 style="color:#ffff5f;"> Jeopardy Game </h1>
+        <button style="text-align:center" alight="right" type="submit" name="back" value="back"><b>Back</b></button>
+        <button style="text-align:center" alight="right" type="submit" name="settings" value="settings"><b>Settings</b></button>
         <thead>
 
         <tr><th>Sports</th><th>Math</th><th>Celebrities</th><th>History</th><th>Music</th></tr>
@@ -136,9 +138,6 @@
 
         </tbody>
         </table>
-
+         </form> 
         </body>
-        <button style="text-align:center" alight="right" type="submit" name="back" value="back"><b>Back</b></button>
-        <button style="text-align:center" alight="right" type="submit" name="settings" value="settings"><b>Settings</b></button></html>
-
-              </form> 
+        </html>
