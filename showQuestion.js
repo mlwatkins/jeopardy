@@ -1,8 +1,8 @@
 	
-       function showQuestion(param, teams) {
+       function showQuestion(param) {
 
                      // alert(count);
 
-       		window.location = "question.jsp?param="+param+"teams="+teams;
+       		window.location = "question.jsp?param="+param;
 
        	}

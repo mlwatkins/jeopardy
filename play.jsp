@@ -120,13 +120,19 @@
 
 
         <% 
-        int numteams = Integer.parseInt(request.getParameter("teams"));
+        int numteams = 0;
+        if (request.getParameter("teams") != null) {
+          numteams = Integer.parseInt(request.getParameter("teams"));
+          session.setAttribute("NumTeams", numteams);
+        } else {
+          numteams = (Integer)session.getAttribute("NumTeams");
+        }
         int count = 1; 
         for (int i = 0; i < 4; i++){
           out.println("<tr>");
           for (int j = 0; j < 5; j++) {
             String score = String.valueOf((i+1)*100); 
-            out.println("<td id=\"score" + count + "\" onclick=\"showQuestion("+count+", " + numteams+ ")\">"+ score);
+            out.println("<td id=\"score" + count + "\" onclick=\"showQuestion("+count+")\">"+ score);
             count += 1; 
            }
 
