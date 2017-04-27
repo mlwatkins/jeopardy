@@ -111,21 +111,20 @@
 
 
         <% 
+        int count = 1; 
         for (int i = 0; i < 4; i++){
           out.println("<tr>");
           for (int j = 0; j < 5; j++) {
             String score = String.valueOf((i+1)*100); 
-            out.println("<td> <a href=\"question.jsp\">" + score);
-
+            out.println("<td id=\"score" + count + "\"> <a href=\"question.jsp\">" + score);
+            count += 1; 
            }
+
         %>
         	</td>
         </tr>
         <%
         }
-
-        if ()
-
 		%>
 
 
