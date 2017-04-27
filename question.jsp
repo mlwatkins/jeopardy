@@ -21,7 +21,9 @@
     String question = "";
     String answer = "";
 
-    //java.io.File file = new java.io.File(filename);
+    if (session.getAttribute("UsedQs") != null) {
+
+}
 
 
 %>
@@ -119,7 +121,13 @@
     
     </head>
 	<body>
-    <% int num = Integer.parseInt(request.getParameter("param")); %>
+    <% 
+    int num = Integer.parseInt(request.getParameter("param")); 
+    if (session.getAttribute("UsedQs") != null) {
+        ArrayList<Integer> list = session.getAttribute("UsedQs");
+        
+    }
+    %>
 
     <%
 

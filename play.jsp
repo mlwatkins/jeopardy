@@ -154,7 +154,7 @@
           out.println("<tr>");
           for (int j = 0; j < 5; j++) {
             String score = String.valueOf((i+1)*100); 
-            out.println("<td id=\"score" + count + "\" onclick=\"showQuestion("+count+")\">"+ score);
+            out.println("<td id=\"score" + count + "\" onclick=\"showQuestion("+count+")\">"+ score +"</td>");
             count += 1; 
            }
 
@@ -210,7 +210,7 @@
          <tr>
          <%
          for (int i = 0; i < numteams; i++) {
-            out.println("<td>Score: <input readonly type=\"text\" value=\"" + scores.get(i+1) + "\" id=\"scores[" + i + "]\"></td>");
+            out.println("<td>Score: <input readonly type=\"text\" value=\"" + scores.get(i+1) + "\" id=\"scores" + i + "\"></td>");
           }
          %>
 
