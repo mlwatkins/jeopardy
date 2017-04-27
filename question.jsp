@@ -165,11 +165,6 @@
 		out.println(question);
 	%>
 
-    <form action="" method="post">
-    <button style="display:none" on
-
-    </form>
-
 
 	<form action="play.jsp" method="post">
 		<button style="text-align:center" alight="right" type="submit" name="back" value="back"><b>Back</b></button>

@@ -1,23 +1,24 @@
 <%@page import="java.util.*" %>
-    <%@page import="java.io.*" %>
-        <%@page import="java.lang.*" %>
+<%@page import="java.io.*" %>
+<%@page import="java.lang.*" %>
 
 
 
-            <%@ page import="javax.servlet.*" %>
-                <%@ page import="javax.servlet.annotation.WebServlet" %>
-                    <%@ page import="javax.servlet.http.*" %>
+<%@ page import="javax.servlet.*" %>
+<%@ page import="javax.servlet.annotation.WebServlet" %>
+<%@ page import="javax.servlet.http.*" %>
 
 
 
-                        <% String LogoutServlet="http://localhost:8080/jeopardy/logout" ; String user=( String)session.getAttribute( "UserID"); %>
+<% 
+String LogoutServlet="http://localhost:8080/jeopardy/logout" ; 
+String user=( String)session.getAttribute( "UserID"); 
+%>
 
-
-                            <!DOCTYPE html>
-                            <html>
-
-                            <head>
-                                <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
                                 <title>Jeoaprdy Start Screen</title>
                                 <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
                                 <link rel="icon" href="/media/favicon.ico" type="image/x-icon" />
@@ -92,7 +93,6 @@
                             </head>
 
                             <body>
-                                <!-- HOW DO WE GET LIKE THE GAME NAME / USER FROM THE PREVIOUS SCREEN -->
                                 <table width="25%" align="right" bgcolor="#E0E0E0" border="0" cellspacing="2" cellpadding="5" <tr>
                                     <td align="right">UserID:
                                         <% out.println(user); %>
@@ -107,7 +107,7 @@
                                 <h2>Jeopardy</h2>
                                 <h4>Please select the number of teams playing this game.</h4>
 
-                                <form action="http://localhost:8080/jeopardy/play.jsp" method="post">
+                                <form action="play.jsp">
                                     <label>Number of Teams: </label>
                                     <select name="teams" id="teams">
                                         <option value="1" id="numteams">1 Team</option>
@@ -115,17 +115,17 @@
                                         <option value="3" id="numteams">3 Teams</option>
                                         <option value="4" id="numteams">4 Teams</option>
                                     </select>
-                                    <button type="submit" style="text-align:center" name="start" value="start">Play</button>
+                                    <button type="submit" style="text-align:center" name="start" value="start" onclick="redirectPlay()">Play</button>
                                 </form>
 
                             </body>
-                            <!--  <script>
-    var numTeams = document.getElementById("numteams");
 
-    <% 
-    int num = Integer.parseInt(%>numTeams%<); 
-    session.setAttribute("NumberOfTeams", num);
-    %>
-      </script> -->
+                            <script>
 
-                            </html>
+                            function redirectPlay() {
+                              var numTeam = Integer(getElementById("numteams")); 
+                              window.location = "play.jsp?param="+numTeam; 
+                            }
+
+                            </script>
+</html>

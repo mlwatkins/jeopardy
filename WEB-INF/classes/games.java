@@ -229,7 +229,7 @@ public class games extends HttpServlet
       out.println(" <td>" + owner + " </td> ");
       out.println("   <td>" + info + " </td> ");
       out.println("<td> ");
-      out.println("      <form action=\"http://localhost:8080/jeopardy/settings\" method=\"get\">");
+      out.println("      <form action=\"http://localhost:8080/jeopardy/start.jsp\" method=\"get\">");
       out.println("          <button type=\"submit\" style=\"text-align:center\" name=\"play\" value=\"play\">Play</button>");
       out.println("</form>");
       out.println("      <form action=\"http://localhost:8080/jeopardy/games\" method=\"post\">");
