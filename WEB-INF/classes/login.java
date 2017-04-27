@@ -55,9 +55,10 @@ public class login extends HttpServlet
    final String from_email = "mlw5ea@virginia.edu";
    final String to_email = "mlw5ea@virginia.edu";
    private String str_cofm = "";
+
+   private String username = "mlw5ea";
+   private String password = "IED5a4e-";
  
-   final String username = "mlw5ea";
-   final String password = "IEd5a4e-";
 
    /** *****************************************************
     *  Overrides HttpServlet's doGet().

@@ -103,7 +103,8 @@ public class table extends HttpServlet
         for (int i = 0; i < 4; i++){
           out.println("<tr>");
           for (int j = 0; j < 5; j++) {
-            out.println("<td>" + String.valueOf((i+1)*100) + "</td>");
+            String score = String.valueOf((i+1)*100);
+            out.println("<td>" + score + "</td>");
           }
           out.println("</tr>");
         }
@@ -124,13 +125,13 @@ public class table extends HttpServlet
           throws ServletException, IOException
    {
    		res.setContentType ("text/html");
-      	PrintWriter out = res.getWriter ();
+      PrintWriter out = res.getWriter ();
    		if (req.getParameter("back") != null) {
         	res.sendRedirect("http://localhost:8080/jeopardy/form");
       	}
 
       if (req.getParameter("settings") != null) {
-        res.sendRedirect("http://localhost:8080/jeopardy/settings");
+        res.sendRedirect("http://localhost:8080/jeopardy/start.jsp");
       }
 
       	out.close();

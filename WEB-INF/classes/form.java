@@ -46,10 +46,9 @@ public class form extends HttpServlet
       res.setContentType ("text/html");
       PrintWriter out = res.getWriter ();
       if (req.getParameter("add") != null) {
-        res.sendRedirect("http://plato.cs.virginia.edu/~mlw5ea/Assignment-3/assignment3.php");
+        res.sendRedirect("http://localhost:8080/jeopardy/addQuestion");
       } else if (req.getParameter("create") != null) {
         Enumeration<String> paramNames = req.getParameterNames();
-
 
         
         List<String> paramList = new ArrayList<String>();
@@ -76,12 +75,16 @@ public class form extends HttpServlet
           }
         }
 
-        writeToFile("/Applications/apache-tomcat/webapps/jeopardy/WEB-INF/data/", "jeopardy.txt", questionList, user, gameID);
+        boolean success = writeToFile("/Applications/apache-tomcat/webapps/jeopardy/WEB-INF/data/", questionList, user, gameID);
         
-        res.sendRedirect("http://localhost:8080/jeopardy/table");
-      } 
+        if (success) {
+          res.sendRedirect("http://localhost:8080/jeopardy/play.jsp");
+        } else {
+          res.sendRedirect("http://localhost:8080/jeopardy/form");
+        }
+      }
        
-        out.close();
+        
   }
    
    /** *****************************************************
@@ -213,7 +216,7 @@ public class form extends HttpServlet
         String answers = "";
         for (int x = 1; x < data.length; x++) {
           if (x == data.length - 1) answers = answers + data[x];
-          else answers = answers + data[x] + ", ";
+          else answers = answers + data[x] + ";";
         }
         out.println("         <table id=\"qaTable\" border=\"1\" align=\"center\" cellpadding=\"3\" >");
       
@@ -261,61 +264,30 @@ public class form extends HttpServlet
       return cleared_str_data;
    }
 
-  private  void writeToFile( java.lang.String foldername, java.lang.String filename, List<String> str, String user, String name )
-  {
+  private  boolean writeToFile( java.lang.String foldername, List<String> str, String user, String name )
+  {   String filename = name + ".txt";
       try {
-          java.io.File file = new java.io.File( foldername, filename );
+
+          java.io.File file = new java.io.File( foldername,  filename );
           java.io.FileWriter fout = new java.io.FileWriter( file , true);
-
-          Scanner inputFile = new Scanner(file);
-
-          java.io.File tempFile = new java.io.File( foldername, "temp-games.txt" );
-          java.io.FileWriter tout = new java.io.FileWriter( tempFile , false);
-
-          // Read lines from the file until no more are left.
-          while (inputFile.hasNext())
-          {
-         // Read the next name.
-            String data = inputFile.nextLine();
-            if (data.contains("User:")) {
-              String[] userCheck = data.split(":");
-              String data2 = inputFile.nextLine();
-              String[] gameCheck = data2.split(":");
-              if ((userCheck[1] == user) && (gameCheck[1] == name)) {
-                tout.write("User:"+user+"\n");
-                tout.write("GameID:"+name+"\n");
-                for (int i = 0; i < str.size(); i++) {
-                  tout.write( str.get(i) + "," );
-                }
-                tout.write("\n");
-                tout.write("\n");
-              } else {
-                tout.write(data + "\n");
-                tout.write(data2 + "\n");
-              }
-            } else {
-              tout.write(data + "\n");
-            }
-            
+          for (int i = 0; i < str.size(); i+=4 ) {
+            fout.write(str.get(i) + ",");
+            fout.write(str.get(i+1) + ",");
+            fout.write(str.get(i+2) + ",");
+            fout.write(str.get(i+3) + "\n");
           }
 
-          
-          tout.flush();
-          tout.close();
-          // Close the file.
-          inputFile.close();
-          // have user enter a game name
-          // fout.write("User:"+user+"\n");
-          // fout.write("GameID:"+name+"\n");
-          // for (int i = 0; i < str.size(); i++) {
-          //   fout.write( str.get(i) + "," );
-          // }
 
-          boolean success = tempFile.renameTo(file);
+          
+          fout.flush();
+          fout.close();
+          return true;
+
           
       } catch ( java.io.IOException e ) {
           System.out.println( "Error: cannot write to file " + foldername + filename + " : " + e.toString() );
           e.printStackTrace();
+          return false; 
       }
   }
 

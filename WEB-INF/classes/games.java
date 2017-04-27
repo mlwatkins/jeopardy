@@ -68,7 +68,7 @@ public class games extends HttpServlet
       user = (String)session.getAttribute("UserID");
 
       if (req.getParameter("play") != null) {
-        res.sendRedirect("http://localhost:8080/jeopardy/settings");
+        res.sendRedirect("http://localhost:8080/jeopardy/start.jsp");
       }
 
       for (int i = 0; i < numberOfGames; i++) {
@@ -89,7 +89,9 @@ public class games extends HttpServlet
       if ((String)session.getAttribute("GameID") != null) {
         res.sendRedirect("http://localhost:8080/jeopardy/form");
       } else if (game != "") {
-        deleteGame("/Applications/apache-tomcat/webapps/jeopardy/WEB-INF/data/games.txt", user, game);
+        String game_file = "/Applications/apache-tomcat/webapps/jeopardy/WEB-INF/data/" + game + ".txt";
+        String list_file = "/Applications/apache-tomcat/webapps/jeopardy/WEB-INF/data/games.txt";
+        deleteGame(list_file, game_file, user, game);
         res.sendRedirect("http://localhost:8080/jeopardy/games");
       } else {
         res.sendRedirect("http://localhost:8080/jeopardy/games");
@@ -292,7 +294,7 @@ public class games extends HttpServlet
       }
   }
 
-  private void deleteGame( String filename, String user, String game) {
+  private void deleteGame( String filename, String path, String user, String game) {
     String gameData = readFile(filename);
     String[] games = gameData.split("\n");
     try {
@@ -310,6 +312,12 @@ public class games extends HttpServlet
       }
       fout.flush();
       fout.close();
+      java.io.File game_file = new java.io.File(path);
+      if (game_file.exists()) {
+        boolean success = game_file.delete();
+      } else {
+        System.out.println(path + " file does not exist.");
+      }
 
     } catch ( java.io.IOException e ) {
       System.out.println( "Error: cannot write to file " + filename + " : " + e.toString() );
