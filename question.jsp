@@ -19,7 +19,7 @@
     String filename = "/Applications/apache-tomcat/webapps/jeopardy/WEB-INF/data/" + game + ".txt";
 
     String question = "";
-    String answer;
+    String answer = "";
 
     //java.io.File file = new java.io.File(filename);
 
@@ -110,6 +110,11 @@
 
         #jeopardyTable tfoot td {text-align: center; background-color:#2a3698;}
 
+        }
+.hide {
+    display:none;   
+}
+
 </style>
     
     </head>
@@ -165,6 +170,24 @@
 		out.println(question);
 	%>
 
+    <button onclick="myFunction()">Answer</button>
+
+    <div id="myDIV">
+    <% out.println(answer); %>
+    </div>
+
+
+    <script>
+    var x = document.getElementById('myDIV');
+    x.style.display = 'none';
+    function myFunction() {
+        if (x.style.display === 'none') {
+            x.style.display = 'block';
+        } else {
+            x.style.display = 'none';
+        }
+    }
+    </script>
 
 	<form action="play.jsp" method="post">
 		<button style="text-align:center" alight="right" type="submit" name="back" value="back"><b>Back</b></button>
