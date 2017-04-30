@@ -108,7 +108,7 @@
           
         <form action="start.jsp">
         <table id="jeopardyTable" cellspacing="5" cellpadding="0">
-        <h1 style="color:#ffff5f;"> Jeopardy Game </h1>
+        <h1 style="color:#ffff5f;"> Jeopardy Game: <% out.println(game); %> </h1>
         <p style="color:#ffff5f;"> Jason Ellington & Madeline Watkins </p>
         <form action="start.jsp" method="post">
         <button style="text-align:center" alight="right" type="submit" name="back" value="back"><b>Back</b></button>

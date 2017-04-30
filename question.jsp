@@ -170,7 +170,6 @@
 
         while ((s = br.readLine()) != null) {
             data = s.split(",");
-
             if ((data[2].equals(category)) && (Integer.parseInt(data[3]) == score)) {
                 question = data[0];
                 answer = data[1];

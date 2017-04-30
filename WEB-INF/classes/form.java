@@ -78,7 +78,7 @@ public class form extends HttpServlet
         boolean success = writeToFile("/Applications/apache-tomcat/webapps/jeopardy/WEB-INF/data/", questionList, user, gameID);
         
         if (success) {
-          res.sendRedirect("http://localhost:8080/jeopardy/play.jsp");
+          res.sendRedirect("http://localhost:8080/jeopardy/start.jsp");
         } else {
           res.sendRedirect("http://localhost:8080/jeopardy/form");
         }
@@ -101,6 +101,12 @@ public class form extends HttpServlet
       user = (String)session.getAttribute("UserID");
       gameID = (String)session.getAttribute("GameID");
       description = (String)session.getAttribute("Description");
+
+
+      String game = (String)session.getAttribute("GameID");
+
+
+      String filename = "/Applications/apache-tomcat/webapps/jeopardy/WEB-INF/data/" + game + ".txt";
 
 
       String qaData = readFile(question_data);
@@ -171,7 +177,6 @@ public class form extends HttpServlet
       out.println("  </head>");
       out.println("  <body>");
       out.println("<b><center><p>Jason Ellington & Madeline Watkins<p></center></b>");
-      
       out.println("  <table width=\"25%\" align=\"right\" bgcolor=\"#E0E0E0\" border=\"0\" cellspacing=\"2\" cellpadding=\"5\"");
       out.println("    <tr>");
       out.println("      <td align=\"right\">UserID:  " + user + "</td>" );
@@ -201,7 +206,7 @@ public class form extends HttpServlet
       out.println("    <tr>");
       
       out.println("      <td>Game ID: " + gameID + "  " + "\t </td>");
-      out.println("      <td>Description: " + description + " </td>");
+      out.println("      <td> Description: " + description + " </td>");
       
       out.println("    </tr>");
       out.println("  </table>");      
@@ -211,27 +216,40 @@ public class form extends HttpServlet
       out.println("<hr />");
       out.println("<br />");
 
-      out.println("      <form action=\"form\" method=\"post\">");
-      for (int i = 0; i < separatedQs.length; i++) {
-        String[] data = separatedQs[i].split(",");
-        String question = data[0];
-        String answers = "";
-        for (int x = 1; x < data.length; x++) {
-          if (x == data.length - 1) answers = answers + data[x];
-          else answers = answers + data[x] + ";";
+      out.println("<table class=\"table\">");
+      out.println("    <thead>");
+      out.println("      <tr>");
+      out.println("        <th>Question</th>");
+      out.println("        <th>Answer</th>");
+      out.println("        <th>Category</th>");
+      out.println("        <th>Score</th>");
+      out.println("     </tr>");
+      out.println("    </thead>");
+      out.println("    <tbody>");
+
+      try {
+        java.io.FileReader fr = new java.io.FileReader(filename);
+        java.io.BufferedReader br = new java.io.BufferedReader(fr);
+
+        String s; 
+        String[] data;
+
+        while ((s = br.readLine()) != null) {
+            data = s.split(",");
+            out.println("<tr>");
+            out.println("<td>" + data[0] + "</td>");
+            out.println("<td>" + data[1] + "</td>");
+            out.println("<td>" + data[2] + "</td>");
+            out.println("<td>" + data[3] + "</td>");
+            out.println("</tr>");
         }
-        out.println("         <table id=\"qaTable\" border=\"1\" align=\"center\" cellpadding=\"3\" >");
-      
-        out.println("           <tr> <td><b>Question: </b>");
-        out.println(" <textarea readonly name=\"question" + i + "\">" + question + "</textarea><br><b>Answer: </b>"); 
-        out.println(" <textarea readonly name=\"answer" + i + "\">" + answers + "</textarea></td>");
-
-        // We decided to use Categories and Scores instead of Rows and Columns
-        // Professor Upsorn said this was okay, just to let you know that this is the wasy we're doing it
-
-        out.println("        <td>Category: <input type=\"text\" name=\"category" + i + "\" </td>");
-        out.println("        <td>Score: <input type=\"text\" name=\"score" + i + "\"</td></tr>");
+      } catch (IOException e) {
+          out.println("File not found");
       }
+      out.println(" </tbody> ");
+      out.println(" </table> ");
+
+      out.println("      <form action=\"form\" method=\"post\">");
       out.println("        <tr><td colspan=\"2\" align=\"center\"><button style=\"text-align:center\" type=\"submit\" name=\"create\" value=\"create\">Create Game</button></td>");
 
        // This button links to the assignment 3 php, however our assignment 3 isn't working properly. We need to fix this for the next assignment
